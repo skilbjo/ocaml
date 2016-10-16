@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+if [[ $# -eq 0 ]]; then
+  file="main.ml"
+else
+  file=$1
+fi
+
+compiled_file="${file%.*}"
+src_dir="./src"
+target_dir="./target"
+
+echo $file
+
+if [[ ! -e $target_dir ]]; then
+  mkdir -p $target_dir
+elif [[ ! -d $target_dir ]]; then
+  echo "$target_dir already exists but is not a director" 1>&2
+fi
+
+ocamlc "$src_dir/$file" -o "$target_dir/$compiled_file"
+
+rm "$src_dir/$compiled_file.cmo" "$src_dir/$compiled_file.cmi"
+
+"$target_dir/$compiled_file"
